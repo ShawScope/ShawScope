@@ -1,0 +1,1 @@
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS media_consent boolean NOT NULL DEFAULT false;

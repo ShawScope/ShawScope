@@ -1,0 +1,1 @@
+ALTER TABLE public.patients ADD COLUMN google_contact_synced_at timestamptz DEFAULT NULL;

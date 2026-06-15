@@ -1,0 +1,1 @@
+ALTER TABLE public.marketing_campaigns ADD COLUMN body_html text;

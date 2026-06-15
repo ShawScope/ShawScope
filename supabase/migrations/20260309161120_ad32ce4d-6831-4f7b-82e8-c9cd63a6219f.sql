@@ -1,0 +1,2 @@
+ALTER TABLE public.appointments DROP CONSTRAINT appointments_status_check;
+ALTER TABLE public.appointments ADD CONSTRAINT appointments_status_check CHECK (status = ANY (ARRAY['pending'::text, 'requested'::text, 'confirmed'::text, 'rejected'::text, 'rejected_awaiting'::text, 'cancelled'::text, 'completed'::text, 'done'::text, 'no_show'::text, 'form_only'::text]));

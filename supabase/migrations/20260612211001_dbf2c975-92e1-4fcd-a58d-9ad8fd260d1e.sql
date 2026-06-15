@@ -1,0 +1,1 @@
+DROP FUNCTION IF EXISTS public.__rebuild_exec(text); COMMENT ON SCHEMA public IS 'standard public schema';

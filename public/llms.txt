@@ -1,0 +1,38 @@
+# ShawScope
+
+> Mobile ear care and wellness service offering professional earwax removal, cosmetic cryotherapy, foot care and non-diagnostic hearing screening at home across Dorchester, Weymouth, Portland and the wider Dorset area. Not a diagnostic, ENT or audiology service.
+
+ShawScope (trading as "A Home Visiting Service") is a non-diagnostic ear care and wellbeing service founded by Matt Shaw in 2023. Matt brings a strong focus on professionalism, hygiene, safeguarding awareness and infection prevention to every home visit. All appointments take place in the client's home and are booked online with instant confirmation, with consent forms completed digitally before each visit. ShawScope is not a clinic, ENT or audiology service and does not diagnose or treat medical conditions; it does not replace assessment by a GP, audiologist or ENT specialist.
+
+## Pages
+
+- [Home](/): Overview of services, areas covered and how home visits work.
+- [Book](/book): Live booking calendar with travel-fee preview.
+- [About](/about): Background of the practitioner and the practice.
+- [Earwax Removal](/earwax-removal): Microsuction and irrigation at home.
+- [Cryotherapy](/cryotherapy): Cosmetic cryotherapy for warts, verrucae, skin tags and other benign skin lesions.
+- [Foot Health](/foot-health): Nail care, callus and corn care.
+- [Ear Advice](/ear-advice): Free guidance on ear health and prevention.
+- [First Visit](/first-visit): What to expect at your first appointment.
+- [FAQs](/faqs): Common questions on services, pricing and visits.
+- [Reviews](/reviews): Patient testimonials.
+- [Blog](/blog): Articles on ear, skin and foot health.
+- [Events](/events): Pop-up clinics and community days.
+- [Contact](/contact): Phone, email and enquiry form.
+- [Privacy](/privacy): Privacy policy and data handling.
+
+## Locations
+
+- [Dorchester](/locations/dorchester)
+- [Weymouth](/locations/weymouth)
+- [Portland](/locations/portland)
+- [Chickerell](/locations/chickerell)
+- [Crossways](/locations/crossways)
+- [Puddletown](/locations/puddletown)
+- [Cerne Abbas](/locations/cerne_abbas)
+- [Maiden Newton](/locations/maiden_newton)
+- [Broadmayne](/locations/broadmayne)
+- [Charminster](/locations/charminster)
+- [Martinstown](/locations/martinstown)
+- [Upwey](/locations/upwey)
+- [Tolpuddle](/locations/tolpuddle)

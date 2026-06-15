@@ -1,0 +1,31 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: *
+Allow: /
+
+# Block old/invalid URLs from previous site
+Disallow: /projects-8
+Disallow: /about-5
+Disallow: /parklyscope
+Disallow: /login
+Disallow: /admin
+Disallow: /consent/
+Disallow: /followup/
+Disallow: /rejection-response/
+Disallow: /cancel-appointment/
+Disallow: /group-cancel-response/
+Disallow: /visit-ready/
+Disallow: /visit-tracking/
+Disallow: /unsubscribe
+
+Sitemap: https://www.shawscope.co.uk/sitemap.xml

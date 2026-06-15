@@ -1,0 +1,1 @@
+ALTER TABLE public.appointments ADD COLUMN come_to_practitioner boolean NOT NULL DEFAULT false;

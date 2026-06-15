@@ -1,0 +1,1 @@
+ALTER TABLE public.kit_inventory ADD COLUMN unit_cost numeric DEFAULT 0;

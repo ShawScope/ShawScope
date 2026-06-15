@@ -1,0 +1,2 @@
+INSERT INTO scheduled_communications (channel, trigger_type, recipient_name, recipient_email, recipient_phone, scheduled_for, status)
+VALUES ('sms', 'review_request', 'Matt', 'matt@shaw-scope.co.uk', '+447793575498', now(), 'pending');

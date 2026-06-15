@@ -1,0 +1,1 @@
+UPDATE public.scheduled_communications SET scheduled_for = now() WHERE trigger_type = 'morning_reminder' AND status = 'pending' AND scheduled_for::date = CURRENT_DATE AND scheduled_for > now();

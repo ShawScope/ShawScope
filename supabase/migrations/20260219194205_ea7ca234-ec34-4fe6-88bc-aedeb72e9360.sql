@@ -1,0 +1,1 @@
+ALTER TABLE public.business_settings ADD COLUMN IF NOT EXISTS travel_buffer_per_mile numeric NOT NULL DEFAULT 0.5;

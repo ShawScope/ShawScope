@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* DEFAULT — original dark theme used by the public website */
+    --background: 222 30% 7%;
+    --foreground: 210 20% 92%;
+
+    --card: 222 25% 11%;
+    --card-foreground: 210 20% 92%;
+
+    --popover: 222 25% 11%;
+    --popover-foreground: 210 20% 92%;
+
+    --primary: 222 35% 10%;
+    --primary-foreground: 210 20% 92%;
+
+    --secondary: 38 92% 55%;
+    --secondary-foreground: 222 30% 8%;
+
+    --muted: 222 20% 14%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 38 92% 55%;
+    --accent-foreground: 222 30% 8%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 222 20% 16%;
+    --input: 222 20% 16%;
+    --ring: 38 92% 55%;
+
+    --radius: 0.625rem;
+
+    --sidebar-background: 222 30% 5%;
+    --sidebar-foreground: 210 20% 92%;
+    --sidebar-primary: 38 92% 55%;
+    --sidebar-primary-foreground: 222 30% 8%;
+    --sidebar-accent: 222 25% 12%;
+    --sidebar-accent-foreground: 210 20% 92%;
+    --sidebar-border: 222 20% 14%;
+    --sidebar-ring: 38 92% 55%;
+
+    --success: 152 60% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 30% 8%;
+
+    --text: 210 20% 92%;
+    --text-muted: 215 15% 55%;
+
+    --surface-dark: 222 35% 10%;
+  }
+
+  /* DARK — admin opt-in (already what :root is, kept for shadcn `dark:` prefix compatibility) */
+  .dark {
+    --background: 222 30% 5%;
+    --foreground: 210 20% 95%;
+    --card: 222 25% 9%;
+    --card-foreground: 210 20% 95%;
+    --popover: 222 25% 9%;
+    --popover-foreground: 210 20% 95%;
+    --primary: 38 92% 55%;
+    --primary-foreground: 222 30% 8%;
+    --secondary: 222 25% 14%;
+    --secondary-foreground: 210 20% 95%;
+    --muted: 222 20% 12%;
+    --muted-foreground: 215 15% 65%;
+    --accent: 38 92% 55%;
+    --accent-foreground: 222 30% 8%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 20% 18%;
+    --input: 222 20% 14%;
+    --ring: 38 92% 55%;
+    --sidebar-background: 222 30% 3%;
+    --sidebar-foreground: 210 20% 95%;
+    --sidebar-primary: 38 92% 55%;
+    --sidebar-primary-foreground: 222 30% 8%;
+    --sidebar-accent: 222 25% 10%;
+    --sidebar-accent-foreground: 210 20% 95%;
+    --sidebar-border: 222 20% 14%;
+    --sidebar-ring: 38 92% 55%;
+    --text: 210 20% 95%;
+    --text-muted: 215 15% 65%;
+    --surface-dark: 222 35% 8%;
+  }
+
+  /* LIGHT — admin opt-in only */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222 30% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 30% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 30% 12%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 222 30% 8%;
+    --secondary: 222 20% 96%;
+    --secondary-foreground: 222 30% 12%;
+    --muted: 222 20% 96%;
+    --muted-foreground: 215 15% 40%;
+    --accent: 38 92% 55%;
+    --accent-foreground: 222 30% 8%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 15% 88%;
+    --input: 222 15% 88%;
+    --ring: 38 92% 55%;
+    --sidebar-background: 222 20% 98%;
+    --sidebar-foreground: 222 30% 12%;
+    --sidebar-primary: 38 92% 55%;
+    --sidebar-primary-foreground: 222 30% 8%;
+    --sidebar-accent: 222 20% 94%;
+    --sidebar-accent-foreground: 222 30% 12%;
+    --sidebar-border: 222 15% 88%;
+    --sidebar-ring: 38 92% 55%;
+    --text: 222 30% 12%;
+    --text-muted: 215 15% 40%;
+    --surface-dark: 222 20% 96%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background antialiased;
+    font-family: 'DM Sans', sans-serif;
+    color: hsl(var(--text));
+  }
+  h1, h2, h3, h4 {
+    font-family: 'DM Serif Display', serif;
+    color: hsl(var(--text));
+  }
+  p, span, a, li, label, td, th {
+    color: inherit;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+  }
+
+  .subtle-pulse {
+    animation: subtle-pulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 hsl(var(--secondary) / 0.18);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px hsl(var(--secondary) / 0);
+    filter: brightness(1.06);
+  }
+}
+
+/* ── Light-mode admin overrides ─────────────────────────────────
+   Many admin tiles use light tints (text-emerald-100, text-rose-200, etc.)
+   that read fine on dark backgrounds but become invisible in light mode.
+   Force these to dark slate text when admin theme is light. */
+.light .text-emerald-100,
+.light .text-emerald-200,
+.light .text-rose-100,
+.light .text-rose-200,
+.light .text-orange-100,
+.light .text-orange-200,
+.light .text-yellow-100,
+.light .text-yellow-200,
+.light .text-teal-100,
+.light .text-teal-200,
+.light .text-indigo-100,
+.light .text-indigo-200,
+.light .text-blue-100,
+.light .text-blue-200,
+.light .text-violet-100,
+.light .text-violet-200,
+.light .text-sky-100,
+.light .text-sky-200,
+.light .text-pink-100,
+.light .text-pink-200,
+.light .text-purple-100,
+.light .text-purple-200,
+.light .text-amber-100,
+.light .text-amber-200,
+.light .text-cyan-100,
+.light .text-cyan-200 {
+  color: hsl(222 30% 12%) !important;
+}
+/* Slightly muted variant for /60, /70, /80 opacities of white */
+.light .text-white\/60,
+.light .text-white\/70,
+.light .text-white\/80,
+.light .text-white\/90 {
+  color: hsl(222 30% 30%) !important;
+}
+/* Plain text-white inside admin should also flip when explicitly on light cards */
+.light .bg-card .text-white,
+.light .bg-background .text-white,
+.light .bg-muted .text-white {
+  color: hsl(222 30% 12%) !important;
+}
+/* …but tab triggers in admin keep white text because they sit on saturated coloured tiles */
+.light [role="tab"].text-white,
+.light [role="tab"] .text-white,
+.light [role="tab"][class*="text-white"],
+.light [role="tab"] span {
+  color: hsl(0 0% 100%) !important;
+}
+/* Admin sidebar header: ensure ParklyScope wordmark and tagline are dark/legible in light mode */
+.light .bg-sidebar .text-sidebar-foreground,
+.light header.bg-sidebar h1,
+.light header.bg-sidebar p {
+  color: hsl(222 30% 12%) !important;
+}
+.light header.bg-sidebar .text-secondary {
+  color: hsl(38 92% 38%) !important;
+}
+.light header.bg-sidebar .text-muted-foreground {
+  color: hsl(222 15% 35%) !important;
+}
+
+
+/* Booking calendar day availability colours */
+button.booking-day-open:not([aria-selected="true"]) {
+  background-color: hsl(152 60% 40% / 0.15) !important;
+  border: 1.5px solid hsl(152 60% 40% / 0.4) !important;
+  color: hsl(152 60% 28%) !important;
+  font-weight: 600;
+}
+button.booking-day-open:not([aria-selected="true"]):hover {
+  background-color: hsl(152 60% 40% / 0.25) !important;
+}
+button.booking-day-limited:not([aria-selected="true"]) {
+  background-color: hsl(38 92% 50% / 0.15) !important;
+  border: 1.5px solid hsl(38 92% 50% / 0.4) !important;
+  color: hsl(38 70% 30%) !important;
+  font-weight: 600;
+}
+button.booking-day-limited:not([aria-selected="true"]):hover {
+  background-color: hsl(38 92% 50% / 0.25) !important;
+}
+/* Fully booked open days: red with strikethrough */
+button.booking-day-closed:not([aria-selected="true"]) {
+  background-color: hsl(0 72% 50% / 0.12) !important;
+  border: 1.5px solid hsl(0 72% 50% / 0.35) !important;
+  color: hsl(0 60% 35%) !important;
+  text-decoration: line-through !important;
+  text-decoration-color: hsl(0 60% 35% / 0.5) !important;
+  font-weight: 600;
+}
+button.booking-day-closed:not([aria-selected="true"]):hover {
+  background-color: hsl(0 72% 50% / 0.2) !important;
+}
+
+/* Closed days: no colour fill, just strikethrough */
+button.booking-day-unavailable:not([aria-selected="true"]) {
+  background-color: transparent !important;
+  border: 1.5px solid transparent !important;
+  color: hsl(var(--muted-foreground)) !important;
+  text-decoration: line-through !important;
+  text-decoration-color: hsl(var(--muted-foreground) / 0.55) !important;
+  font-weight: 500;
+}
+button.booking-day-unavailable:not([aria-selected="true"]):hover {
+  background-color: hsl(var(--muted) / 0.45) !important;
+}
+
+/* Booking portal contrast lock: white + amber only */
+.booking-portal {
+  color: hsl(var(--primary-foreground));
+}
+
+.booking-portal .text-muted-foreground {
+  color: hsl(var(--primary-foreground) / 0.82) !important;
+}
+
+.booking-portal .text-foreground {
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+.booking-portal .text-primary,
+.booking-portal [class*="text-green-"],
+.booking-portal [class*="text-red-"],
+.booking-portal [class*="text-amber-"] {
+  color: hsl(var(--secondary)) !important;
+}
+
+.booking-portal .border-primary {
+  border-color: hsl(var(--secondary)) !important;
+}
+
+/* Light-mode fix for Today's Appointments card (dark teal gradient → light teal) */
+.light .from-teal-950\/80 {
+  --tw-gradient-from: hsl(180 40% 92% / 0.95) !important;
+}
+.light .to-teal-900\/40 {
+  --tw-gradient-to: hsl(180 35% 85% / 0.7) !important;
+}
+.light .border-teal-700\/50 {
+  border-color: hsl(180 30% 65%) !important;
+}
+.light .text-teal-200,
+.light .text-teal-300,
+.light .text-teal-300\/70,
+.light .text-teal-300\/90,
+.light .text-teal-400 {
+  color: hsl(180 60% 22%) !important;
+}
+
+/* ── Apple-style glass buttons (public site hero) ─────────────── */
+.glass-btn {
+  background: linear-gradient(180deg, hsl(0 0% 100% / 0.14) 0%, hsl(0 0% 100% / 0.06) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid hsl(0 0% 100% / 0.22);
+  color: #fff;
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.2), 0 6px 18px -8px hsl(0 0% 0% / 0.55);
+  transition: all 0.25s ease;
+}
+.glass-btn:hover {
+  background: linear-gradient(180deg, hsl(0 0% 100% / 0.22) 0%, hsl(0 0% 100% / 0.1) 100%);
+  border-color: hsl(0 0% 100% / 0.35);
+  color: #fff;
+}
+.glass-btn-amber {
+  background: linear-gradient(180deg, hsl(38 92% 62% / 0.95) 0%, hsl(38 92% 48% / 0.85) 100%);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  border: 1px solid hsl(38 92% 78% / 0.6);
+  color: #1a1208;
+  box-shadow: inset 0 1px 0 hsl(38 92% 90% / 0.5), 0 8px 22px -6px hsl(38 92% 30% / 0.55);
+  transition: all 0.25s ease;
+}
+.glass-btn-amber:hover {
+  filter: brightness(1.08);
+  border-color: hsl(38 92% 85% / 0.85);
+  color: #1a1208;
+}

@@ -1,0 +1,1 @@
+ALTER TABLE public.patients ADD COLUMN alert_note text DEFAULT NULL;

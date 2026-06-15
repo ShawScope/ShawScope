@@ -1,0 +1,1 @@
+ALTER TABLE public.consultation_notes ADD COLUMN other_notes text DEFAULT NULL;

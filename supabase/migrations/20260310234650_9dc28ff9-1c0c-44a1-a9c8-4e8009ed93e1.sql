@@ -1,0 +1,1 @@
+ALTER TABLE public.chat_logs ADD COLUMN IF NOT EXISTS admin_read boolean NOT NULL DEFAULT false;

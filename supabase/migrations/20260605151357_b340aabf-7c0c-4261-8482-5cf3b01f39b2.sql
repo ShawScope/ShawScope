@@ -1,0 +1,1 @@
+ALTER VIEW public.gov_upcoming_renewals SET (security_invoker = on);

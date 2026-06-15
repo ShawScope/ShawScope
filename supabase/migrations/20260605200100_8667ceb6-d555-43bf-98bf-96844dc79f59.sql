@@ -1,0 +1,1 @@
+ALTER TABLE public.chat_logs ADD COLUMN IF NOT EXISTS matt_notified_at timestamptz;

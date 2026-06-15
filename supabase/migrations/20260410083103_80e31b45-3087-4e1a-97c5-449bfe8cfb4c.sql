@@ -1,0 +1,1 @@
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS tracking_opened_at timestamptz DEFAULT NULL;

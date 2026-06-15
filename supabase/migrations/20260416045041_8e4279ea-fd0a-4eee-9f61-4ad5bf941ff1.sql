@@ -1,0 +1,1 @@
+UPDATE service_offers SET price_note = '£50 + £30 for the no-wax person (hearing screen included if ear fit allows)' WHERE id = 'fc6776b2-cba5-4fce-ae8e-67a7067d5808';

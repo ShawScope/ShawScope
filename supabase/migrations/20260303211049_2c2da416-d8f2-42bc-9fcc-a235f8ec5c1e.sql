@@ -1,0 +1,1 @@
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS delay_notified_at timestamptz DEFAULT NULL;

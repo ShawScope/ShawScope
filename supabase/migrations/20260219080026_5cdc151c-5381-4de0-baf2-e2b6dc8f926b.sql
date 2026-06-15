@@ -1,0 +1,1 @@
+ALTER TABLE public.communications_log ADD COLUMN body_html text;

@@ -1,0 +1,1 @@
+ALTER TABLE public.business_settings ADD COLUMN IF NOT EXISTS booking_cutoff_hours integer NOT NULL DEFAULT 14;
