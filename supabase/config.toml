@@ -1,4 +1,8 @@
-project_id = "mihnpfjsdudhldvyisdu"
+project_id = "egsapqxzgjxgyckjbshz"
+
+[auth]
+site_url = "http://localhost:8080"
+additional_redirect_urls = ["http://localhost:8080", "http://localhost:8080/**", "https://shawscope.lovable.app", "https://shawscope.lovable.app/**"]
 
 [functions]
   [functions.ai-diagnosis]

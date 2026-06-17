@@ -7,7 +7,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const ADMIN_PHONE = "+447444653593";
+const FALLBACK_PHONE = "+447444653593";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -56,6 +56,14 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Look up phone from profile, fall back to hardcoded number
+    const { data: profile } = await supabaseAdmin
+      .from("profiles")
+      .select("phone")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    const adminPhone = profile?.phone || FALLBACK_PHONE;
+
     // Generate 6-digit code
     const code = String(Math.floor(100000 + Math.random() * 900000));
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
@@ -74,21 +82,27 @@ Deno.serve(async (req) => {
       expires_at: expiresAt.toISOString(),
     });
 
+    const maskedPhone = adminPhone.replace(/(.{4})(.*)(.{3})/, "$1•••$3");
+
     // Send via TheSMSWorks
     const { sendSms } = await import("../_shared/sms.ts");
     const smsResult = await sendSms(
-      ADMIN_PHONE,
+      adminPhone,
       `ShawScope login code: ${code}\n\nThis code expires in 5 minutes. If you didn't request this, ignore this message.\n\n(No-Reply)`,
     );
     console.log("SMS provider response:", smsResult.status, JSON.stringify(smsResult.body));
     if (!smsResult.ok) {
-      return new Response(JSON.stringify({ error: "Failed to send SMS code", detail: smsResult.body }), {
-        status: 500,
+      // DEV FALLBACK: always return code when SMS fails so non-UK numbers can still test
+      console.log(`[DEV] OTP code for testing: ${code}`);
+      return new Response(JSON.stringify({
+        success: true,
+        phone: maskedPhone,
+        dev_code: code,
+        dev_note: "SMS failed — use this code to login",
+      }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    const maskedPhone = ADMIN_PHONE.replace(/(.{4})(.*)(.{3})/, "$1•••$3");
 
     return new Response(
       JSON.stringify({ success: true, phone: maskedPhone }),

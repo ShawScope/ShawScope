@@ -129,6 +129,7 @@ const AdminLogin = () => {
         trustDevice();
       }
       setOtpVerified(true);
+      navigate("/admin", { replace: true });
     } catch {
       toast.error("Verification failed");
     }

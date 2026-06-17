@@ -9,8 +9,11 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const ADMIN_EMAIL = "matt@shawscope.co.uk";
-const ADMIN_PHONE = "+447444653593";
+// In production these are Matt's real contacts.
+// Set DEV_ADMIN_EMAIL / DEV_ADMIN_PHONE secrets to redirect notifications
+// to yourself during testing so Matt doesn't receive test bookings.
+const ADMIN_EMAIL = Deno.env.get("DEV_ADMIN_EMAIL") || "matt@shawscope.co.uk";
+const ADMIN_PHONE = Deno.env.get("DEV_ADMIN_PHONE") || "+447444653593";
 
 async function sendAdminSms(message: string) {
   const result = await sendSms(ADMIN_PHONE, message + "\n\n(No-Reply)");
