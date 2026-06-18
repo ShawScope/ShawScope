@@ -54,11 +54,12 @@ It was originally built and hosted on **Lovable** (an AI app-building platform t
 
 1. **Vercel deployment.** No hosting, no CI/CD pipeline, no custom domain/SSL configured yet. `.env`'s `VITE_APP_URL` still points at the old Lovable URL as a placeholder. The app currently only runs locally (`npm run dev`) or via manual build (`npm run build`).
 2. **Supabase plan.** The org is on the **Free plan**. The original plan called for Pro. Free plan has no built-in automated backups (worked around with a custom weekly backup job — see §6) and has lower compute/bandwidth limits. Decide whether to upgrade.
-3. **Missing function: `gmail-heidi-poll`.** A cron job references this function, but it was never exported into this codebase — it only exists on the original live Lovable project. Needs to be requested from Lovable before that cron job can be safely repointed (currently still calling the old project).
-4. **8-year patient data retention policy.** A `cleanup-expired-patients` function exists and is correctly written, but is **not scheduled to run**. Needs Matt's explicit confirmation that 8 years is still the right retention period before enabling automatic deletion.
-5. **E2E coverage is partial.** Covers admin login/MFA and booking wizard navigation, not full booking submission, consent forms, file uploads, or the admin dashboard's many sub-features. See `e2e/README.md`.
+3. **8-year patient data retention policy.** A `cleanup-expired-patients` function exists and is correctly written, but is **not scheduled to run**. Needs Matt's explicit confirmation that 8 years is still the right retention period before enabling automatic deletion.
+4. **E2E coverage is partial.** Covers admin login/MFA and booking wizard navigation, not full booking submission, consent forms, file uploads, or the admin dashboard's many sub-features. See `e2e/README.md`.
 
-Resolved since the table above was written: `GOOGLE_SERVICE_ACCOUNT_JSON` and `GA4_PROPERTY_ID` are now set (18 June 2026). Google OAuth client ID/secret were intentionally skipped — Matt uses SMS-based admin login, not Gmail-based.
+Resolved since the table above was written:
+- `GOOGLE_SERVICE_ACCOUNT_JSON` and `GA4_PROPERTY_ID` are now set (18 June 2026). Google OAuth client ID/secret were intentionally skipped — Matt uses SMS-based admin login, not Gmail-based.
+- The `gmail-heidi-poll` cron job (previously calling a function that never existed in this codebase) was investigated with Lovable and confirmed to be abandoned scaffolding from a May 2026 experiment — it only ever caught Heidi Health billing receipt emails, never real clinical transcripts, and the actual Heidi workflow in production use is a manual paste-in flow in `ConsultationFormDialog.tsx` that doesn't depend on it. The dead cron schedule has been removed (18 June 2026). The `heidi_imports`/`gmail_poll_state` tables (3 harmless archived rows) were kept rather than dropped, per a "don't delete data unless there's a reason to" preference.
 
 ## 5. Where things live
 
@@ -80,7 +81,6 @@ Resolved since the table above was written: `GOOGLE_SERVICE_ACCOUNT_JSON` and `G
   - `process-scheduled-comms` — every 5 min, sends queued booking emails/SMS
   - `scheduled-backup` — weekly, database backup
   - `monthly-blog-generation` — monthly, AI blog post generation
-  - `gmail-heidi-poll-every-5min` — currently broken, see §4 item 3
 - **Secrets/environment variables**: managed in Supabase Dashboard → Settings → Edge Functions → Secrets. Never committed to git.
 - **Rollback**: see `docs/BACKUP_AND_ROLLBACK_PLAN.md` for four scenarios (full revert, single-table restore, lost files, full disaster recovery).
 
