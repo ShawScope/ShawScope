@@ -36,8 +36,9 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const [forgotOpen, setForgotOpen] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
-  const [step, setStep] = useState<"credentials" | "otp">("credentials");
+  const [step, setStep] = useState<"credentials" | "otp" | "totp">("credentials");
   const [otpCode, setOtpCode] = useState("");
+  const [totpCode, setTotpCode] = useState("");
   const [maskedPhone, setMaskedPhone] = useState("");
   const [otpVerified, setOtpVerified] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(true);
@@ -54,9 +55,31 @@ const AdminLogin = () => {
     }
 
     if (localStorage.getItem(ADMIN_OAUTH_PENDING_KEY)) {
-      void sendSmsAndShowOtp();
+      void proceedToSecondFactor();
     }
   }, [session, isAdmin, otpVerified, navigate]);
+
+  // After password/OAuth sign-in, use the authenticator app if the admin has
+  // one enabled; otherwise fall back to the existing SMS code flow.
+  const proceedToSecondFactor = async () => {
+    setLoading(true);
+    try {
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      const statusRes = await supabase.functions.invoke("admin-authenticator", {
+        body: { action: "status" },
+        headers: { Authorization: `Bearer ${currentSession?.access_token}` },
+      });
+      if (!statusRes.error && statusRes.data?.enabled) {
+        setStep("totp");
+        setTotpCode("");
+        setLoading(false);
+        return;
+      }
+    } catch {
+      // If the status check fails for any reason, fall back to SMS rather than blocking login.
+    }
+    await sendSmsAndShowOtp();
+  };
 
   const sendSmsAndShowOtp = async () => {
     setLoading(true);
@@ -101,8 +124,38 @@ const AdminLogin = () => {
       return;
     }
 
-    // Send SMS code
-    await sendSmsAndShowOtp();
+    await proceedToSecondFactor();
+  };
+
+  const handleVerifyTotp = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (totpCode.length !== 6) return;
+    setLoading(true);
+
+    try {
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      const res = await supabase.functions.invoke("admin-authenticator", {
+        body: { action: "verify", code: totpCode },
+        headers: { Authorization: `Bearer ${currentSession?.access_token}` },
+      });
+
+      if (res.error || res.data?.error) {
+        toast.error(res.data?.error || "Invalid code");
+        setTotpCode("");
+        setLoading(false);
+        return;
+      }
+
+      toast.success("Welcome back!");
+      if (rememberDevice) {
+        trustDevice();
+      }
+      setOtpVerified(true);
+      navigate("/admin", { replace: true });
+    } catch {
+      toast.error("Verification failed");
+    }
+    setLoading(false);
   };
 
   const handleVerifyOtp = async (e?: React.FormEvent) => {
@@ -159,6 +212,7 @@ const AdminLogin = () => {
     await supabase.auth.signOut();
     setStep("credentials");
     setOtpCode("");
+    setTotpCode("");
     setOtpVerified(false);
     localStorage.removeItem(DEVICE_TRUST_KEY);
     localStorage.removeItem(ADMIN_OAUTH_PENDING_KEY);
@@ -188,15 +242,16 @@ const AdminLogin = () => {
             {step === "credentials" ? "Admin Login" : "Verify Your Identity"}
           </CardTitle>
           <CardDescription>
-            {step === "credentials"
-              ? "Sign in to ParklyScope"
-              : (
-                <span className="flex items-center justify-center gap-1">
-                  <Smartphone className="h-3.5 w-3.5" />
-                  Code sent to {maskedPhone}
-                </span>
-              )
-            }
+            {step === "credentials" ? (
+              "Sign in to ParklyScope"
+            ) : step === "totp" ? (
+              "Enter the code from your authenticator app"
+            ) : (
+              <span className="flex items-center justify-center gap-1">
+                <Smartphone className="h-3.5 w-3.5" />
+                Code sent to {maskedPhone}
+              </span>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -296,6 +351,42 @@ const AdminLogin = () => {
                 </svg>
                 Sign in with Google
               </Button>
+            </form>
+          ) : step === "totp" ? (
+            <form onSubmit={handleVerifyTotp} className="space-y-6">
+              <div className="flex flex-col items-center gap-4">
+                <Label>Enter the 6-digit code from your authenticator app</Label>
+                <InputOTP
+                  maxLength={6}
+                  value={totpCode}
+                  onChange={setTotpCode}
+                  onComplete={() => handleVerifyTotp()}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+              <Button type="submit" className="w-full" disabled={loading || totpCode.length !== 6}>
+                {loading ? "Verifying..." : "Verify & Continue"}
+              </Button>
+              <div className="flex items-center justify-between text-sm">
+                <Button type="button" variant="ghost" size="sm" onClick={() => { setTotpCode(""); void sendSmsAndShowOtp(); }} disabled={loading}>
+                  Use SMS code instead
+                </Button>
+                <Button type="button" variant="ghost" size="sm" onClick={handleCancel}>
+                  Cancel
+                </Button>
+              </div>
+              <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
+                <input type="checkbox" checked={rememberDevice} onChange={(e) => setRememberDevice(e.target.checked)} className="rounded border-input" />
+                Remember this device for {DEVICE_TRUST_DAYS} days
+              </label>
             </form>
           ) : (
             <form onSubmit={handleVerifyOtp} className="space-y-6">

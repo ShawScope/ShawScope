@@ -41,6 +41,14 @@ Consent forms are sent via a unique access-token link (not a guessable URL) and 
 
 This is a meaningfully complete framework — it was not something introduced during this migration, it already existed in the application and has been carried over intact with zero data loss.
 
+## 3a. RLS policy correction (post-migration finding)
+
+⚠️→✅ **Found and fixed.** During migration, an extra `admin_all_access` policy (and a set of duplicate `anon_*` policies) was added on top of the original, more precisely-scoped policy set as a defensive measure. This was confirmed via Lovable to be unnecessary — the original granular named policies (e.g. `"Service role only"` on `admin_authenticator_factors`, `"Anyone can insert appointments"`) already provided complete and correct coverage, and are the actual intended security model from the live source project.
+
+Worse, the added `admin_all_access` policy was present on sensitive service-role-only tables — `admin_authenticator_factors` (stores TOTP secrets), `login_otp_codes`, `email_send_log`, and `phone_call_sessions`. Because Postgres RLS policies are OR'd together, this meant any authenticated admin could read these tables directly via the client SDK, bypassing the intended restriction that they only be accessible through the backend Edge Functions (using the service role key).
+
+**Fix applied:** removed the added `admin_all_access` and `anon_*` policies from all tables except two (`gov_files`, `gov_folders`) where they were the only policy present (these two tables were created manually after the original schema push failed on them, so they never inherited an original policy). Verified after the fix: every table retains at least one working policy, admin dashboard access still works via the original named policies, and the sensitive service-role-only tables are no longer reachable by authenticated admins directly.
+
 ## 4. Access control & audit logging
 
 ✅ **In place.** `gov_access_log` records who did what: `user_id`, `user_email`, `action`, `entity`, `entity_id`, `ip`, `user_agent`, `occurred_at` — giving a genuine audit trail of admin actions against patient/clinical records, not just a basic login log.
