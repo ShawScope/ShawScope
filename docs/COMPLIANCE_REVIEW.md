@@ -49,6 +49,12 @@ Worse, the added `admin_all_access` policy was present on sensitive service-role
 
 **Fix applied:** removed the added `admin_all_access` and `anon_*` policies from all tables except two (`gov_files`, `gov_folders`) where they were the only policy present (these two tables were created manually after the original schema push failed on them, so they never inherited an original policy). Verified after the fix: every table retains at least one working policy, admin dashboard access still works via the original named policies, and the sensitive service-role-only tables are no longer reachable by authenticated admins directly.
 
+## 3b. Least-privilege grants
+
+⚠️→✅ **Found and fixed.** The `anon` and `authenticated` roles had `TRUNCATE`, `REFERENCES`, and `TRIGGER` privileges granted on all 96 public tables — Supabase's default schema-level grants, never used by the application (PostgREST, which the app talks to, never issues these). This was defense-in-depth risk: if any RLS policy ever had a gap, these unused privileges widened the potential blast radius unnecessarily.
+
+**Fix applied:** revoked `TRUNCATE`/`REFERENCES`/`TRIGGER` from both roles on all tables, and set default privileges so future tables don't inherit them either. `SELECT`/`INSERT`/`UPDATE`/`DELETE` remain — these are needed by the app and are correctly gated by RLS. Verified after the fix: public booking page (anon read) and admin login both still work correctly.
+
 ## 4. Access control & audit logging
 
 ✅ **In place.** `gov_access_log` records who did what: `user_id`, `user_email`, `action`, `entity`, `entity_id`, `ip`, `user_agent`, `occurred_at` — giving a genuine audit trail of admin actions against patient/clinical records, not just a basic login log.
@@ -83,6 +89,7 @@ Database-level access is enforced via Row Level Security — every table require
 | Consent management | ✅ In place |
 | Clinical governance records | ✅ Extensive, pre-existing |
 | Access control & audit logging | ✅ In place |
+| Least-privilege grants | ✅ Fixed — unused TRUNCATE/REFERENCES/TRIGGER revoked |
 | Encryption (at rest & in transit) | ✅ Satisfied (platform default) |
 | Storage bucket access control | ✅ Correct |
 | **Data retention / 8-year deletion policy** | ⚠️ **Written but not scheduled — needs sign-off to enable** |
