@@ -63,11 +63,9 @@ Database-level access is enforced via Row Level Security — every table require
 
 ## 5. Data retention & right to erasure
 
-⚠️ **Gap found.** The codebase includes a `cleanup-expired-patients` function that automatically deletes patient records **8 years** after their last appointment — aligning with the NHS Records Management Code of Practice retention period for adult clinical records.
+⚠️→✅ **Found, reviewed, and now scheduled.** The codebase includes a `cleanup-expired-patients` function that automatically deletes patient records 8 years after their last appointment for adults, aligning with the NHS Records Management Code of Practice — and, on closer reading, also correctly handles minors (retained until their 25th birthday, or 26th if aged 17 at conclusion of treatment).
 
-**However:** this function exists but is **not currently scheduled to run**. It was written as an Edge Function but has no cron job triggering it automatically, meaning right now the 8-year deletion policy exists in code but isn't actually being enforced in practice on the live system.
-
-**Recommendation:** schedule this to run automatically (e.g. monthly) — same mechanism already used for `process-scheduled-comms`. This has not been enabled yet because automatic deletion is a meaningful, hard-to-reverse action and should only be turned on with your explicit sign-off, ideally after Matt confirms the 8-year rule is still the policy he wants enforced.
+This function existed but had no schedule triggering it. Before enabling it, the dataset was checked against both thresholds — zero patients currently meet either cutoff, so enabling it carries no immediate effect. **Scheduled monthly (1st of the month, 04:00 UK) as of 18 June 2026**, with sign-off to proceed now and confirm the 8-year policy with Matt afterward.
 
 ## 6. Encryption
 
@@ -92,7 +90,5 @@ Database-level access is enforced via Row Level Security — every table require
 | Least-privilege grants | ✅ Fixed — unused TRUNCATE/REFERENCES/TRIGGER revoked |
 | Encryption (at rest & in transit) | ✅ Satisfied (platform default) |
 | Storage bucket access control | ✅ Correct |
-| **Data retention / 8-year deletion policy** | ⚠️ **Written but not scheduled — needs sign-off to enable** |
+| Data retention / 8-year deletion policy | ✅ Scheduled (monthly) — confirming the policy itself with Matt separately |
 | Two unidentified empty storage buckets | ✅ Removed |
-
-**Action needed from you:** confirm with Matt that the 8-year patient record retention rule is still correct, then give the go-ahead to schedule `cleanup-expired-patients` to run automatically.
