@@ -23,7 +23,7 @@ import mattHomevisit from "@/assets/matt-homevisit.jpg";
 import mattHomevisit2 from "@/assets/matt-homevisit2.jpg";
 import mattShawscopeHome from "@/assets/matt-shawscope-portrait.png";
 import cryoTreatment from "@/assets/cryo-treatment.png";
-import heroVideo from "@/assets/hero-video.mp4.asset.json";
+import heroVideo from "@/assets/hero-video.mp4";
 import BloodTestingPromo from "@/components/BloodTestingPromo";
 import FootCareWaitlist from "@/components/FootCareWaitlist";
 
@@ -104,7 +104,7 @@ const Index = () => {
       <section className="relative py-16 sm:py-28 lg:py-36 text-center text-primary-foreground overflow-hidden">
         {/* Hero background video with edge-blur mask */}
         <video
-          src={heroVideo.url}
+          src={heroVideo}
           poster={mattHomevisit}
           autoPlay
           muted
