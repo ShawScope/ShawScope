@@ -74,6 +74,8 @@ Resolved since the previous version of this document:
 - **8-year patient data retention policy** is scheduled (monthly). Also correctly handles minors (retained until 25th/26th birthday per NHS guidance). Verified zero patients currently meet either threshold, so enabling it had no immediate effect.
 - **Production deployment and domain cutover** — both complete, see §3.
 - **Final data sync from the live site** — complete, see §3. All test data created during this engagement's own testing was identified and removed afterward (8 test appointments/patients across various test emails, cross-checked against the live system's own backup to confirm none of the 14 patients existing only in our database were contractor test data beyond one obvious "Test Patient" record).
+- **Vercel hosting ownership** — the project was initially deployed under the contractor's personal Vercel account during build-out. It has since been fully transferred to Matt's own Vercel team (`shaw-scope`), and the GitHub Actions deployment credentials were updated and verified working under the new ownership. Matt now genuinely owns the hosting infrastructure, not just the domain pointing to it.
+- **SMS reliability** — the system depended on a single static TheSMSWorks JWT, which went stale roughly 9 days after issue despite its embedded expiry claim suggesting much longer validity. Rebuilt to auto-generate fresh tokens from the API Key + Secret on every request (with automatic retry on a 401), so this category of failure shouldn't recur. Verified with real SMS sends to a UK number.
 
 ## 5. Where things live
 
@@ -81,7 +83,7 @@ Resolved since the previous version of this document:
 |---|---|
 | Source code | `github.com/ShawScope/ShawScope`, `main` branch |
 | Live site | `https://shawscope.co.uk` |
-| Vercel project | `orbit-doctor/shawscope` (Vercel dashboard) |
+| Vercel project | `shaw-scope/shawscope` (Vercel dashboard, owned by Matt) |
 | Database + backend | [Supabase Dashboard → egsapqxzgjxgyckjbshz](https://supabase.com/dashboard/project/egsapqxzgjxgyckjbshz) (London) |
 | Database migrations (version controlled) | `supabase/migrations/` |
 | Edge Function source | `supabase/functions/` |

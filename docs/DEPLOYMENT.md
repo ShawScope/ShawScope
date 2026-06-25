@@ -24,7 +24,7 @@ This whole process takes roughly 30–60 seconds and requires no manual interven
 | What | Where |
 |---|---|
 | The workflow itself | `.github/workflows/deploy.yml` |
-| Vercel project | `orbit-doctor/shawscope` |
+| Vercel project | `shaw-scope/shawscope` (owned by Matt's Vercel team) |
 | Deploy credentials | GitHub repo secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` (Settings → Secrets and variables → Actions on the GitHub repo) |
 | Frontend environment variables | Vercel dashboard → `shawscope` project → Settings → Environment Variables (Production) |
 | Custom domain | Vercel dashboard → `shawscope` project → Settings → Domains |
@@ -80,3 +80,4 @@ This swaps production traffic back to that build immediately — no rebuild need
 - **Site loads but shows blank/broken**: usually means routing — every client-side route needs the SPA rewrite rule in `vercel.json` to fall back to `index.html`. If that file is ever removed, every page except the homepage will 404.
 - **Site loads but can't connect to anything (booking fails, login fails)**: check the env vars on Vercel are set as **non-sensitive** (see above) and actually have values — `vercel env ls production` shows names but not values; use `vercel env pull` and check the local file it generates to confirm real values are present.
 - **New code not appearing after push**: check the GitHub Actions run actually succeeded (Actions tab on GitHub) — if the build step failed, the old deployment stays live, which is usually fine (fails safe) but means the fix didn't actually go out.
+- **Deploy fails with an authorization/scope error after a project transfer or team change**: the `VERCEL_TOKEN` GitHub secret is tied to the team it was created under — if the project ever moves to a different team (as it did once, from a contractor's personal account to Matt's own `shaw-scope` team), a new token must be generated under that team and the `VERCEL_TOKEN`/`VERCEL_ORG_ID` GitHub secrets updated to match. `VERCEL_PROJECT_ID` typically stays the same across a transfer.
