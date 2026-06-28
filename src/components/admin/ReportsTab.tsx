@@ -181,7 +181,10 @@ const ReportsTab = () => {
         body: { mode: "analytics" },
       });
       if (error || data?.error) throw new Error(data?.error || "Failed to start Google connection");
-      window.open(data.url, "_blank", "width=520,height=720");
+      // Fixed popup dimensions (width=/height=) are unreliable on mobile
+      // browsers, which often block or mishandle sized popup windows.
+      // A plain new-tab open works consistently on both mobile and desktop.
+      window.open(data.url, "_blank");
       const poll = setInterval(async () => {
         const { data: tokens } = await supabase
           .from("google_oauth_tokens")
