@@ -104,6 +104,19 @@ const FootCareWaitlist = () => {
                   <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
                     We’ll share availability, pricing, and booking details here as we prepare to launch.
                   </p>
+                  <div className="mx-auto mt-4 max-w-sm">
+                    <Button asChild variant="secondary" size="lg" className="w-full">
+                      <a
+                        href="mailto:matt@shawscope.co.uk?subject=Join%20the%20Foot%20Health%20Waitlist&body=Hi%20Matt%2C%0A%0AI%27d%20like%20to%20join%20the%20Foot%20Health%20Home%20Visits%20waitlist.%20Please%20contact%20me%20when%20availability%20opens.%0A%0AName%3A%20%0APhone%3A%20%0AEmail%3A%20%0A%0AThanks!"
+                        aria-label="Join our waitlist"
+                      >
+                        Join our waitlist
+                      </a>
+                    </Button>
+                    <p className="mt-3 text-xs text-muted-foreground">
+                      Your email client will open with a pre-filled note. Please include your name, phone number and email address so we can contact you.
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
