@@ -89,7 +89,7 @@ const FootCareWaitlist = () => {
             Foot Health <span className="text-secondary">Home Visits</span>
           </h2>
           <p className="text-muted-foreground max-w-lg mx-auto leading-relaxed">
-            We're launching professional foot care home visits in Dorset. Join the waitlist and help us shape pricing by sharing what you'd expect to pay.
+            We're launching professional foot care home visits in Dorset. More details will be shared here soon.
           </p>
         </motion.div>
 
@@ -101,17 +101,9 @@ const FootCareWaitlist = () => {
                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-secondary/10">
                     <Footprints className="h-8 w-8 text-secondary" />
                   </div>
-                  <h3 className="font-serif text-xl">Help Us Get Pricing Right</h3>
                   <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-                    Answer 4 quick questions about what you'd expect to pay for foot health treatments, then leave your details to be first to know when we launch.
+                    We’ll share availability, pricing, and booking details here as we prepare to launch.
                   </p>
-                  <Button
-                    size="lg"
-                    className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
-                    onClick={() => setPhase("poll")}
-                  >
-                    Join Waitlist <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
                 </CardContent>
               </Card>
             </motion.div>
