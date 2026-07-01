@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,38 +7,42 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { AuthProvider } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/useTheme";
 import { HelmetProvider } from "react-helmet-async";
-import Index from "./pages/Index";
-import BookingPage from "./pages/BookingPage";
-
-import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import NotFound from "./pages/NotFound";
-import AboutPage from "./pages/AboutPage";
-import EarwaxRemovalPage from "./pages/EarwaxRemovalPage";
-import CryotherapyPage from "./pages/CryotherapyPage";
-import ContactPage from "./pages/ContactPage";
-import PrivacyPage from "./pages/PrivacyPage";
-import ConsentFormPage from "./pages/ConsentFormPage";
-import EarAdvicePage from "./pages/EarAdvicePage";
-import FollowUpPage from "./pages/FollowUpPage";
-import FootHealthPage from "./pages/FootHealthPage";
-import RejectionResponsePage from "./pages/RejectionResponsePage";
-import CancelAppointmentPage from "./pages/CancelAppointmentPage";
-import GroupCancelResponsePage from "./pages/GroupCancelResponsePage";
-import UnsubscribePage from "./pages/UnsubscribePage";
-import ParklyScope from "./pages/ParklyScope";
-import VisitReadyPage from "./pages/VisitReadyPage";
-import VisitTrackingPage from "./pages/VisitTrackingPage";
-import LocationPage from "./pages/LocationPage";
-import FAQPage from "./pages/FAQPage";
-import FirstVisitPage from "./pages/FirstVisitPage";
-import EventsPage from "./pages/EventsPage";
-import BlogPage from "./pages/BlogPage";
-import ReviewsPage from "./pages/ReviewsPage";
-import PollResponsePage from "./pages/PollResponsePage";
-import LocationInfoPage from "./pages/LocationInfoPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
+
+// Every page is loaded on demand (route-based code splitting) instead of
+// all being bundled together up front. Previously every visitor downloaded
+// the entire admin dashboard's code just to view the homepage; now each
+// page's code only loads when that page is actually visited.
+const Index = lazy(() => import("./pages/Index"));
+const BookingPage = lazy(() => import("./pages/BookingPage"));
+const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const EarwaxRemovalPage = lazy(() => import("./pages/EarwaxRemovalPage"));
+const CryotherapyPage = lazy(() => import("./pages/CryotherapyPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
+const ConsentFormPage = lazy(() => import("./pages/ConsentFormPage"));
+const EarAdvicePage = lazy(() => import("./pages/EarAdvicePage"));
+const FollowUpPage = lazy(() => import("./pages/FollowUpPage"));
+const FootHealthPage = lazy(() => import("./pages/FootHealthPage"));
+const RejectionResponsePage = lazy(() => import("./pages/RejectionResponsePage"));
+const CancelAppointmentPage = lazy(() => import("./pages/CancelAppointmentPage"));
+const GroupCancelResponsePage = lazy(() => import("./pages/GroupCancelResponsePage"));
+const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
+const ParklyScope = lazy(() => import("./pages/ParklyScope"));
+const VisitReadyPage = lazy(() => import("./pages/VisitReadyPage"));
+const VisitTrackingPage = lazy(() => import("./pages/VisitTrackingPage"));
+const LocationPage = lazy(() => import("./pages/LocationPage"));
+const FAQPage = lazy(() => import("./pages/FAQPage"));
+const FirstVisitPage = lazy(() => import("./pages/FirstVisitPage"));
+const EventsPage = lazy(() => import("./pages/EventsPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const ReviewsPage = lazy(() => import("./pages/ReviewsPage"));
+const PollResponsePage = lazy(() => import("./pages/PollResponsePage"));
+const LocationInfoPage = lazy(() => import("./pages/LocationInfoPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 
 const queryClient = new QueryClient();
 
@@ -50,6 +54,12 @@ const ScrollToTop = () => {
   return null;
 };
 
+const PageLoadingFallback = () => (
+  <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+  </div>
+);
+
 const App = () => (
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
@@ -60,6 +70,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
+          <Suspense fallback={<PageLoadingFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/book" element={<BookingPage />} />
@@ -97,6 +108,7 @@ const App = () => (
             } />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

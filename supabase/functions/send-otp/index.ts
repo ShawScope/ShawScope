@@ -92,14 +92,10 @@ Deno.serve(async (req) => {
     );
     console.log("SMS provider response:", smsResult.status, JSON.stringify(smsResult.body));
     if (!smsResult.ok) {
-      // DEV FALLBACK: always return code when SMS fails so non-UK numbers can still test
-      console.log(`[DEV] OTP code for testing: ${code}`);
       return new Response(JSON.stringify({
-        success: true,
-        phone: maskedPhone,
-        dev_code: code,
-        dev_note: "SMS failed — use this code to login",
+        error: "Failed to send SMS code. Please try again, or use your authenticator app if you have one set up.",
       }), {
+        status: 502,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
