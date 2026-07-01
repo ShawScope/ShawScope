@@ -1,0 +1,22 @@
+name: Sync to ShawScope/ShawScope
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to ShawScope/ShawScope
+        run: |
+          git config user.email "sync-bot@shawscope.co.uk"
+          git config user.name "Lovable Sync"
+          git remote add target https://x-access-token:${{ secrets.SYNC_PAT }}@github.com/ShawScope/ShawScope.git
+          git push target main --force
