@@ -40,6 +40,7 @@ const SiteFooter = () => (
         <p className="max-w-2xl text-center text-primary-foreground/50 leading-relaxed px-2">
           ShawScope is a non-diagnostic ear care and wellness service. We do not diagnose or treat medical conditions and do not replace assessment by a GP, audiologist or ENT specialist. If you have ear pain, discharge, sudden hearing change, dizziness, bleeding or any concerning symptom, please contact your GP, NHS 111 or a pharmacist.
         </p>
+        <p className="text-primary-foreground/40 text-xs">Registered with the Information Commissioner&apos;s Office (ICO).</p>
         <Link
           to="/login"
           className="text-primary-foreground/20 hover:text-primary-foreground/40 transition-colors"
