@@ -171,6 +171,21 @@ const ReviewsPage = () => {
         </div>
       </section>
 
+      {/* Under Development */}
+      <section className="bg-background py-12">
+        <div className="container mx-auto max-w-3xl px-4 text-center">
+          <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.5 }}>
+            <div className="rounded-xl border border-dashed border-border bg-muted/50 p-6">
+              <h2 className="text-lg font-semibold text-foreground mb-2">Under Development</h2>
+              <p className="text-sm text-muted-foreground">
+                We're building a live review feed that will pull directly from Google here.
+                In the meantime, click the button above to read every verified review on Google.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* JSON-LD */}
       <script
         type="application/ld+json"
